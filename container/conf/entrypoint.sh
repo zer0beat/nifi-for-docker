@@ -1,32 +1,8 @@
 #!/bin/sh
 
-configure_zookeeper() {
-    echo "Configure ${NIFI_HOME}/state/zookeeper/myid"
-    mkdir -p ${NIFI_HOME}/state/zookeeper
-    echo "${ZOO_MY_ID}" > ${NIFI_HOME}/state/zookeeper/myid
+configure_secure_node() {
+    echo "Configure SECURE NiFi node"
 
-    echo "Configure ${NIFI_HOME}/conf/zookeeper.properties"
-    sed -i.backup -e "/^server.1/ d" ${NIFI_HOME}/conf/zookeeper.properties
-    for server in $ZOO_SERVERS; do
-        echo "$server" >> ${NIFI_HOME}/conf/zookeeper.properties
-    done
-
-    echo "Configure ${NIFI_HOME}/conf/nifi.properties"
-    sed -i.backup \
-        -e "s/\(nifi\.zookeeper\.connect\.string=\).*\$/\1${ZOO_CONNECT}/" \
-        -e "s/\(nifi\.state\.management\.embedded\.zookeeper\.start=\).*\$/\1true/" \
-        -e "s/\(nifi\.web\.http\.host=\).*\$/\1$(hostname)/" \
-        -e "s/\(nifi\.cluster\.is\.node=\).*\$/\1true/" \
-        -e "s/\(nifi\.cluster\.node\.address=\).*\$/\1$(hostname)/" \
-        -e "s/\(nifi\.cluster\.node\.protocol\.port=\).*\$/\1${COORDINATION_PORT:-9999}/" \
-        -e "s/\(nifi\.remote\.input\.host=\).*\$/\1$(hostname)/" \
-        -e "s/\(nifi\.remote\.input\.secure=\).*\$/\1false/" \
-        -e "s/\(nifi\.remote\.input\.socket\.port=\).*\$/\1${SITE2SITE_PORT:-9998}/" \
-        ${NIFI_HOME}/conf/nifi.properties
-}
-
-enable_ssl() {
-    echo "Configuring environment with SSL settings"
     : ${KEYSTORE_PATH:?"Must specify an absolute path to the keystore being used."}
     if [[ ! -f "${KEYSTORE_PATH}" ]]; then
         echo "Keystore file specified (${KEYSTORE_PATH}) does not exist."
@@ -44,7 +20,7 @@ enable_ssl() {
     : ${TRUSTSTORE_PASSWORD:?"Need to set DEST non-empty"}
 
     echo "Configure ${NIFI_HOME}/conf/nifi.properties"
-    sed -i.backup \
+    sed -i \
         -e "s \(nifi\.security\.keystore=\).*\$ \1${KEYSTORE_PATH} " \
         -e "s \(nifi\.security\.keystoreType=\).*\$ \1${KEYSTORE_TYPE} " \
         -e "s \(nifi\.security\.keystorePasswd=\).*\$ \1${KEYSTORE_PASSWORD} " \
@@ -53,18 +29,60 @@ enable_ssl() {
         -e "s \(nifi\.security\.truststoreType=\).*\$ \1${TRUSTSTORE_TYPE} " \
         -e "s \(nifi\.security\.truststorePasswd=\).*\$ \1${TRUSTSTORE_PASSWORD} " \
         -e "s \(nifi\.web\.http\.port=\).*\$ \1 " \
+        -e "s \(nifi\.web\.https\.host=\).*\$ \1$(hostname) " \
         -e "s \(nifi\.web\.https\.port=\).*\$ \18443 " \
-        -e "s/\(nifi\.remote\.input\.secure=\).*\$/\1true/" \
+        -e "s \(nifi\.remote\.input\.host=\).*\$ \1$(hostname) " \
+        -e "s \(nifi\.remote\.input\.secure=\).*\$ \1true " \
         -e "s \(nifi\.remote\.input\.socket\.port=\).*\$ \1${SITE2SITE_PORT:-9998} " \
         ${NIFI_HOME}/conf/nifi.properties
 }
 
-if [ -n "$ZOO_MY_ID" ]; then
-    configure_zookeeper
-fi
+configure_unsecure_cluster() {
+    echo "Configure UNSECURE NiFi cluster"
 
-if [ -n "$KEYSTORE_PATH" ]; then
-    enable_ssl
+    echo "Configure ${NIFI_HOME}/state/zookeeper/myid"
+    mkdir -p ${NIFI_HOME}/state/zookeeper
+    echo "${ZOO_MY_ID}" > ${NIFI_HOME}/state/zookeeper/myid
+
+    echo "Configure ${NIFI_HOME}/conf/zookeeper.properties"
+    sed -i.backup -e "/^server.1/ d" ${NIFI_HOME}/conf/zookeeper.properties
+    for server in $ZOO_SERVERS; do
+        echo "$server" >> ${NIFI_HOME}/conf/zookeeper.properties
+    done
+
+    echo "Configure ${NIFI_HOME}/conf/nifi.properties"
+    sed -i \
+        -e "s \(nifi\.zookeeper\.connect\.string=\).*\$ \1${ZOO_CONNECT} " \
+        -e "s \(nifi\.state\.management\.embedded\.zookeeper\.start=\).*\$ \1true " \
+        -e "s \(nifi\.cluster\.is\.node=\).*\$ \1true " \
+        -e "s \(nifi\.cluster\.node\.address=\).*\$ \1$(hostname) " \
+        -e "s \(nifi\.cluster\.node\.protocol\.port=\).*\$ \1${COORDINATION_PORT:-9999} " \
+        ${NIFI_HOME}/conf/nifi.properties
+}
+
+configure_unsecure_node() {
+    echo "Configure UNSECURE NiFi node"
+
+    echo "Configure ${NIFI_HOME}/conf/nifi.properties"
+    sed -i \
+        -e "s \(nifi\.web\.http\.host=\).*\$ \1$(hostname) " \
+        -e "s \(nifi\.web\.http\.port=\).*\$ \18080 " \
+        -e "s \(nifi\.remote\.input\.host=\).*\$ \1$(hostname) " \
+        -e "s \(nifi\.remote\.input\.secure=\).*\$ \1false " \
+        -e "s \(nifi\.remote\.input\.socket\.port=\).*\$ \1${SITE2SITE_PORT:-9998} " \
+        ${NIFI_HOME}/conf/nifi.properties
+}
+
+if [ "$ENABLE_SSL" == "true" ]; then
+    configure_secure_node
+    if [ -n "$ZOO_MY_ID" ]; then
+        echo "configure_secure_cluster"
+    fi
+else
+    configure_unsecure_node
+    if [ -n "$ZOO_MY_ID" ]; then
+        configure_unsecure_cluster
+    fi
 fi
 
 exec "$@"
