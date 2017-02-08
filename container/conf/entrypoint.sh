@@ -123,5 +123,8 @@ else
     fi
 fi
 
+tail -q -F ${NIFI_HOME}/logs/nifi-app.log 2>/dev/null &
+tail -q -F ${NIFI_HOME}/logs/nifi-user.log 2>/dev/null &
+
 exec "$@"
 

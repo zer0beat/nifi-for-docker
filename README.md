@@ -26,64 +26,72 @@ From your checkout directory:
  	
 		http://localhost:8080/nifi
 
+
+## Volumes
+- The following directories are exposed as volumes which may optionally be mounted to a specified location
+	- `${NIFI_HOME}/flowfile_repository`
+	- `${NIFI_HOME}/content_repository`
+	- `${NIFI_HOME}/database_repository`
+	- `${NIFI_HOME}/provenance_repository`
+
 ## Supported environment variables
-* **ZOO_MY_ID**: Used to configure ${NIFI_HOME}/state/zookeeper/myid
+- **ZOO_MY_ID**: Used to configure ${NIFI_HOME}/state/zookeeper/myid
 
         p.e. [docker run ...] -e ZOO_MY_ID=1 [...]
 
-* **ZOO_SERVERS**: Used to populate ${NIFI_HOME}/conf/zookeeper.properties
+- **ZOO_SERVERS**: Used to populate ${NIFI_HOME}/conf/zookeeper.properties
 
         p.e. [docker run ...] -e ZOO_SERVERS=server.1=nifi1:2888:3882 server.2=nifi2:2888:3888 server.3=nifi3:2888:3888 [...]
 
-* **ZOO_CONNECT**: nifi.zookeeper.connect.string in ${NIFI_HOME}/conf/nifi.properties
+- **ZOO_CONNECT**: nifi.zookeeper.connect.string in ${NIFI_HOME}/conf/nifi.properties
 
         p.e. [docker run ...] -e ZOO_CONNECT=nifi1:2181,nifi2:2181,nifi3:2181 [...]
 
-* **ENABLE_SSL**: Used to enable SSL support in cluster
+- **ENABLE_SSL**: Used to enable SSL support in cluster
 
         p.e. [docker run ...] -e ENABLE_SSL="true" [...]
 
-* **KEYSTORE_PATH**: nifi.security.keystore in ${NIFI_HOME}/conf/nifi.properties
+- **KEYSTORE_PATH**: nifi.security.keystore in ${NIFI_HOME}/conf/nifi.properties
 
         p.e. [docker run ...] -e KEYSTORE_PATH=/opt/certs/keystore.jks [...]
 
-* **KEYSTORE_TYPE**: nifi.security.keystoreType in ${NIFI_HOME}/conf/nifi.properties
+- **KEYSTORE_TYPE**: nifi.security.keystoreType in ${NIFI_HOME}/conf/nifi.properties
 
         p.e. [docker run ...] -e KEYSTORE_TYPE=JKS [...]
 
-* **KEYSTORE_PASSWORD**: nifi.security.keystorePasswd and nifi.security.keyPasswd in ${NIFI_HOME}/conf/nifi.properties
+- **KEYSTORE_PASSWORD**: nifi.security.keystorePasswd and nifi.security.keyPasswd in ${NIFI_HOME}/conf/nifi.properties
 
         p.e. [docker run ...] -e KEYSTORE_PASSWORD=yourKeystorePasswordHere [...]
 
-* **TRUSTSTORE_PATH**: nifi.security.truststore in ${NIFI_HOME}/conf/nifi.properties
+- **TRUSTSTORE_PATH**: nifi.security.truststore in ${NIFI_HOME}/conf/nifi.properties
 
         p.e. [docker run ...] -e TRUSTSTORE_PATH=/opt/certs/truststore.jks [...]
 
-* **TRUSTSTORE_TYPE**: nifi.security.truststoreType in ${NIFI_HOME}/conf/nifi.properties
+- **TRUSTSTORE_TYPE**: nifi.security.truststoreType in ${NIFI_HOME}/conf/nifi.properties
 
         p.e. [docker run ...] -e TRUSTSTORE_TYPE=JKS [...]
 
-* **TRUSTSTORE_PASSWORD**: nifi.security.truststorePasswd in ${NIFI_HOME}/conf/nifi.properties
+- **TRUSTSTORE_PASSWORD**: nifi.security.truststorePasswd in ${NIFI_HOME}/conf/nifi.properties
 
         p.e. [docker run ...] -e TRUSTSTORE_PASSWORD=yourKeystorePasswordHere [...]
 
-* **INIT_ADMIN_IDENTITY**: Used to configure "Initial Admin Identity" property in ${NIFI_HOME}/conf/authorizers.xml
+- **INIT_ADMIN_IDENTITY**: Used to configure "Initial Admin Identity" property in ${NIFI_HOME}/conf/authorizers.xml
 
         p.e. [docker run ...] -e INIT_ADMIN_IDENTITY="CN=godo, OU=NIFI" [...]
 
-* **NODE_IDENTITIES**: Used to populate "Node Identity X" properties in ${NIFI_HOME}/conf/authorizers.xml
+- **NODE_IDENTITIES**: Used to populate "Node Identity X" properties in ${NIFI_HOME}/conf/authorizers.xml
 
         p.e. [docker run ...] -e NODE_IDENTITIES="CN=nifi1, OU=NIFI|CN=nifi2, OU=NIFI|CN=nifi3, OU=NIFI" [...]
 
-* **NODE_HOSTNAME**: Used to configure some host related properties in ${NIFI_HOME}/conf/nifi.properties (defaults to $HOSTNAME)
+- **NODE_HOSTNAME**: Used to configure some host related properties in ${NIFI_HOME}/conf/nifi.properties (defaults to $HOSTNAME)
 
         p.e. [docker run ...] -e NODE_HOSTNAME=nifi1 [...]
 
-* **SITE2SITE_PORT**: nifi.remote.input.socket.port in ${NIFI_HOME}/conf/nifi.properties (defaults to 9998)
+- **SITE2SITE_PORT**: nifi.remote.input.socket.port in ${NIFI_HOME}/conf/nifi.properties (defaults to 9998)
 
         p.e. [docker run ...] -e SITE2SITE_PORT=11443 [...]
 
-* **COORDINATION_PORT**: nifi.cluster.node.protocol.port in ${NIFI_HOME}/conf/nifi.properties (defaults to 9999)
+- **COORDINATION_PORT**: nifi.cluster.node.protocol.port in ${NIFI_HOME}/conf/nifi.properties (defaults to 9999)
 
         p.e. [docker run ...] -e COORDINATION_PORT=11444 [...]
 
