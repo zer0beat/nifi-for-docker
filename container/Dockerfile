@@ -12,6 +12,8 @@ EXPOSE 80 443
 
 ADD ./conf/ /opt/conf
 
+VOLUME ["${NIFI_HOME}/flowfile_repository", "${NIFI_HOME}/database_repository", "${NIFI_HOME}/content_repository", "${NIFI_HOME}/provenance_repository"]
+
 ENTRYPOINT ["/opt/conf/entrypoint.sh"]
 
 CMD ["/opt/nifi/bin/nifi.sh","run"]
