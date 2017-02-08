@@ -1,0 +1,67 @@
+version: '3'
+services:
+    nifi1:
+        image: godo/nifi:1.1.1
+        restart: always
+        ports:
+            - 8444:8443
+        volumes:
+            - E:/temp/nifi-toolkit/nifi-toolkit-1.1.1/security_output_nifi/nifi1:/opt/certs
+        environment:
+            ZOO_MY_ID: 1
+            ZOO_SERVERS: server.1=nifi1:2888:3882=nifi2:2888:3888 server.3=nifi3:2888:3888
+            ZOO_CONNECT: nifi1:2181,nifi2:2181,nifi3:2181
+            ENABLE_SSL: "true"
+            KEYSTORE_PATH: /opt/certs/keystore.jks  
+            KEYSTORE_TYPE: JKS
+            KEYSTORE_PASSWORD: MH+cIGYUCV8Af+dL5ySgooXhLbgqc9mBoG3yfmo6H+A
+            TRUSTSTORE_PATH: /opt/certs/truststore.jks
+            TRUSTSTORE_TYPE: JKS
+            TRUSTSTORE_PASSWORD: kw466mb4gSH1ZUWxkN9FdyOxWtmxGzF5gAgFQsegyRw
+            INIT_ADMIN_IDENTITY: CN=godo, OU=NIFI
+            NODE_IDENTITIES: CN=nifi1, OU=NIFI|CN=nifi2, OU=NIFI|CN=nifi3, OU=NIFI
+            NODE_HOSTNAME: nifi1
+            
+    nifi2:
+        image: godo/nifi:1.1.1
+        restart: always
+        ports:
+            - 8445:8443
+        volumes:
+            - E:/temp/nifi-toolkit/nifi-toolkit-1.1.1/security_output_nifi/nifi2:/opt/certs
+        environment:
+            ZOO_MY_ID: 2
+            ZOO_SERVERS: server.1=nifi1:2888:3888 server.2=nifi2:2888:3888 server.3=nifi3:2888:3888
+            ZOO_CONNECT: nifi1:2181,nifi2:2181,nifi3:2181
+            ENABLE_SSL: "true"
+            KEYSTORE_PATH: /opt/certs/keystore.jks  
+            KEYSTORE_TYPE: JKS
+            KEYSTORE_PASSWORD: TcAVQLYWyTUA4i6TCRlcqwSHWmXEL9dJ8L5wCW4XOZM
+            TRUSTSTORE_PATH: /opt/certs/truststore.jks
+            TRUSTSTORE_TYPE: JKS
+            TRUSTSTORE_PASSWORD: aSmnftvN5+iPkbWS2hPTTVaplQkRbxcyIvXUNhqxIoQ
+            INIT_ADMIN_IDENTITY: CN=godo, OU=NIFI
+            NODE_IDENTITIES: CN=nifi1, OU=NIFI|CN=nifi2, OU=NIFI|CN=nifi3, OU=NIFI
+            NODE_HOSTNAME: nifi2
+
+    nifi3:
+        image: godo/nifi:1.1.1
+        restart: always
+        ports:
+            - 8446:8443
+        volumes:
+            - E:/temp/nifi-toolkit/nifi-toolkit-1.1.1/security_output_nifi/nifi3:/opt/certs
+        environment:
+            ZOO_MY_ID: 3
+            ZOO_SERVERS: server.1=nifi1:2888:3888 server.2=nifi2:2888:3888 server.3=nifi3:2888:3888
+            ZOO_CONNECT: nifi1:2181,nifi2:2181,nifi3:2181
+            ENABLE_SSL: "true"
+            KEYSTORE_PATH: /opt/certs/keystore.jks  
+            KEYSTORE_TYPE: JKS
+            KEYSTORE_PASSWORD: smfpgSjLKs75viyggRjLICPFVF7sQDorQoy+sCIpTu0
+            TRUSTSTORE_PATH: /opt/certs/truststore.jks
+            TRUSTSTORE_TYPE: JKS
+            TRUSTSTORE_PASSWORD: LFBW96ek1N4kHR3FQFP9FmbXpZWXrcSFWeBDFhcKGqc
+            INIT_ADMIN_IDENTITY: CN=godo, OU=NIFI
+            NODE_IDENTITIES: CN=nifi1, OU=NIFI|CN=nifi2, OU=NIFI|CN=nifi3, OU=NIFI
+            NODE_HOSTNAME: nifi3
