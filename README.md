@@ -8,7 +8,7 @@ Provides a Dockerfile and associated scripts for configuring an instance of [Apa
 3. Unsecure NiFi cluster
 4. Secure NiFi cluster  
 
-## Sample Usage
+## Sample Usage:
 
 From your checkout directory:
 		
@@ -87,6 +87,21 @@ From your checkout directory:
 
         p.e. [docker run ...] -e COORDINATION_PORT=11444 [...]
 
-## Conventions
-### $NIFI_HOME
-- The Dockerfile specifies an environment variable `NIFI_HOME` via the `ENV` command
+## Extras
+
+### [NiFi Toolkit](https://nifi.apache.org/download.html) usage to generate sample certificates
+
+        ./bin/tls-toolkit.sh standalone -n 'nifi[1-3]' -C 'CN=godo, OU=NIFI' -O -o ../security_output
+
+### Sample Docker compose files that create 3 nodes clusters
+
+In container folder are sample Compose files that create secured and unsecured clusters. You need docker-compose to run that compose files.
+
+        docker-compose -f container/docker-compose_secure.yml up -d
+
+NOTE: You have to reconfigure that file with your own generated sample certificates to test it.
+
+## Useful links
+
+* [Apache NiFi 1.1.0 – Secured cluster setup](https://pierrevillard.com/tag/tls-toolkit/)
+* [apiri/docker-apache-nifi](https://github.com/apiri/dockerfile-apache-nifi)
