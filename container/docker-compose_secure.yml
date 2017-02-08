@@ -4,12 +4,12 @@ services:
         image: godo/nifi:1.1.1
         restart: always
         ports:
-            - 8444:8443
+            - 8444:443
         volumes:
             - E:/temp/nifi-toolkit/nifi-toolkit-1.1.1/security_output_nifi/nifi1:/opt/certs
         environment:
             ZOO_MY_ID: 1
-            ZOO_SERVERS: server.1=nifi1:2888:3882=nifi2:2888:3888 server.3=nifi3:2888:3888
+            ZOO_SERVERS: server.1=nifi1:2888:3882 server.2=nifi2:2888:3888 server.3=nifi3:2888:3888
             ZOO_CONNECT: nifi1:2181,nifi2:2181,nifi3:2181
             ENABLE_SSL: "true"
             KEYSTORE_PATH: /opt/certs/keystore.jks  
@@ -26,7 +26,7 @@ services:
         image: godo/nifi:1.1.1
         restart: always
         ports:
-            - 8445:8443
+            - 8445:443
         volumes:
             - E:/temp/nifi-toolkit/nifi-toolkit-1.1.1/security_output_nifi/nifi2:/opt/certs
         environment:
@@ -48,7 +48,7 @@ services:
         image: godo/nifi:1.1.1
         restart: always
         ports:
-            - 8446:8443
+            - 8446:443
         volumes:
             - E:/temp/nifi-toolkit/nifi-toolkit-1.1.1/security_output_nifi/nifi3:/opt/certs
         environment:

@@ -8,7 +8,7 @@ RUN apk --no-cache add tar && \
 	mkdir -p ${NIFI_HOME} && \
 	wget -qO- ${DIST_MIRROR}/${VERSION}/nifi-${VERSION}-bin.tar.gz | tar xvz -C ${NIFI_HOME} --strip-components=1
 	
-EXPOSE 8080 8443
+EXPOSE 80 443
 
 ADD ./conf/ /opt/conf
 

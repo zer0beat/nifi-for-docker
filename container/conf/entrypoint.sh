@@ -64,7 +64,7 @@ configure_secure_node() {
         -e "s \(nifi\.security\.truststorePasswd=\).*\$ \1${TRUSTSTORE_PASSWORD} " \
         -e "s \(nifi\.web\.http\.port=\).*\$ \1 " \
         -e "s \(nifi\.web\.https\.host=\).*\$ \1${NODE_HOSTNAME:-$HOSTNAME} " \
-        -e "s \(nifi\.web\.https\.port=\).*\$ \18443 " \
+        -e "s \(nifi\.web\.https\.port=\).*\$ \1443 " \
         -e "s \(nifi\.remote\.input\.host=\).*\$ \1${NODE_HOSTNAME:-$HOSTNAME} " \
         -e "s \(nifi\.remote\.input\.secure=\).*\$ \1true " \
         -e "s \(nifi\.remote\.input\.socket\.port=\).*\$ \1${SITE2SITE_PORT:-9998} " \
@@ -104,7 +104,7 @@ configure_unsecure_node() {
     echo "Configure ${NIFI_HOME}/conf/nifi.properties"
     sed -i \
         -e "s \(nifi\.web\.http\.host=\).*\$ \1${NODE_HOSTNAME:-$HOSTNAME} " \
-        -e "s \(nifi\.web\.http\.port=\).*\$ \18080 " \
+        -e "s \(nifi\.web\.http\.port=\).*\$ \180 " \
         -e "s \(nifi\.remote\.input\.host=\).*\$ \1${NODE_HOSTNAME:-$HOSTNAME} " \
         -e "s \(nifi\.remote\.input\.secure=\).*\$ \1false " \
         -e "s \(nifi\.remote\.input\.socket\.port=\).*\$ \1${SITE2SITE_PORT:-9998} " \
