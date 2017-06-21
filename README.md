@@ -18,7 +18,7 @@ From your checkout directory:
 		
 2. Run the image (mode 1)
 
-		docker run --rm	-p 8080:80 godo/nifi:1.1.1
+		docker run --rm	-p 8080:8080 godo/nifi:1.1.1
 
 3. Wait for the image to initalize
 		

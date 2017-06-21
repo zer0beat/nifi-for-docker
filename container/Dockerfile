@@ -2,18 +2,22 @@ FROM openjdk:8-jdk-alpine
 
 ENV             DIST_MIRROR             http://mirror.cc.columbia.edu/pub/software/apache/nifi
 ENV             NIFI_HOME               /opt/nifi
-ENV             VERSION                 1.1.1
+ENV             VERSION                 1.3.0
 
-RUN apk --no-cache add tar && \
+RUN set -x && \
+    apk --no-cache add tar wget && \
 	mkdir -p ${NIFI_HOME} && \
-	wget -qO- ${DIST_MIRROR}/${VERSION}/nifi-${VERSION}-bin.tar.gz | tar xvz -C ${NIFI_HOME} --strip-components=1
+	wget -qO- ${DIST_MIRROR}/${VERSION}/nifi-${VERSION}-bin.tar.gz | tar xvz -C ${NIFI_HOME} --strip-components=1 && \
+    mkdir -p ${NIFI_HOME}/database_repository ${NIFI_HOME}/flowfile_repository ${NIFI_HOME}/content_repository ${NIFI_HOME}/provenance_repository && \
+    addgroup nifi && \
+    adduser -D -G nifi nifi && \
+    chown -R nifi:nifi ${NIFI_HOME}
 	
-EXPOSE 80 443
+VOLUME ["${NIFI_HOME}/flowfile_repository", "${NIFI_HOME}/database_repository", "${NIFI_HOME}/content_repository", "${NIFI_HOME}/provenance_repository"]
+EXPOSE 8080 8443
+USER nifi
+WORKDIR ${NIFI_HOME}
 
 ADD ./conf/ /opt/conf
-
-VOLUME ["${NIFI_HOME}/flowfile_repository", "${NIFI_HOME}/database_repository", "${NIFI_HOME}/content_repository", "${NIFI_HOME}/provenance_repository"]
-
 ENTRYPOINT ["/opt/conf/entrypoint.sh"]
-
-CMD ["/opt/nifi/bin/nifi.sh","run"]
+CMD ["bin/nifi.sh","run"]
