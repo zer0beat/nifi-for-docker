@@ -8,6 +8,7 @@ services:
         networks:
             - nifi
         environment:
+            NODE_HOSTNAME: nifi1
             ZOO_MY_ID: 1
             ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=nifi2:2888:3888 server.3=nifi3:2888:3888
             ZOO_CONNECT: nifi1:2181,nifi2:2181,nifi3:2181
@@ -20,6 +21,7 @@ services:
         networks:
             - nifi
         environment:
+            NODE_HOSTNAME: nifi2
             ZOO_MY_ID: 2
             ZOO_SERVERS: server.1=nifi1:2888:3888 server.2=0.0.0.0:2888:3888 server.3=nifi3:2888:3888
             ZOO_CONNECT: nifi1:2181,nifi2:2181,nifi3:2181
@@ -32,6 +34,7 @@ services:
         networks:
             - nifi
         environment:
+            NODE_HOSTNAME: nifi3
             ZOO_MY_ID: 3
             ZOO_SERVERS: server.1=nifi1:2888:3888 server.2=nifi2:2888:3888 server.3=0.0.0.0:2888:3888
             ZOO_CONNECT: nifi1:2181,nifi2:2181,nifi3:2181

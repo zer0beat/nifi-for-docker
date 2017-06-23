@@ -14,11 +14,11 @@ From your checkout directory:
 		
 1. Build the image
         
-        docker build -f ./container/Dockerfile -t godo/nifi:1.3.0 -t godo/nifi:latest .
+        docker build -f ./container/Dockerfile -t jllacer/nifi:1.3.0 -t jllacer/nifi:latest .
 		
 2. Run the image (mode 1)
 
-		docker run --rm -p 8080:8080 godo/nifi:1.3.0
+		docker run --rm -p 8080:8080 jllacer/nifi:1.3.0
 
 3. Wait for the image to initalize
 		
@@ -77,7 +77,7 @@ From your checkout directory:
 
 - **INIT_ADMIN_IDENTITY**: Used to configure "Initial Admin Identity" property in ${NIFI_HOME}/conf/authorizers.xml
 
-        p.e. [docker run ...] -e INIT_ADMIN_IDENTITY="CN=godo, OU=NIFI" [...]
+        p.e. [docker run ...] -e INIT_ADMIN_IDENTITY="CN=jllacer, OU=NIFI" [...]
 
 - **NODE_IDENTITIES**: Used to populate "Node Identity X" properties in ${NIFI_HOME}/conf/authorizers.xml
 
@@ -103,7 +103,7 @@ From your checkout directory:
 
 ### [NiFi Toolkit](https://nifi.apache.org/download.html) usage to generate sample certificates
 
-        ./bin/tls-toolkit.sh standalone -n 'nifi[1-3]' -C 'CN=godo, OU=NIFI' -O -o ../security_output
+        ./bin/tls-toolkit.sh standalone -n 'nifi[1-3]' -C 'CN=jllacer, OU=NIFI' -O -o ../security_output
 
 ### Sample Docker compose files that create 3 nodes clusters
 
