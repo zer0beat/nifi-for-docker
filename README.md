@@ -1,6 +1,6 @@
 ![Apache NiFi logo](http://nifi.apache.org/images/niFi-logo-horizontal.png "Apache NiFi")
 # Apache NiFi for Docker
-## Version 1.1.1
+## Version 1.3.0
 
 Provides a Dockerfile and associated scripts for configuring an instance of [Apache NiFi](http://nifi.apache.org) to run in diferent modes:
 1. Unsecure Nifi node
@@ -14,11 +14,11 @@ From your checkout directory:
 		
 1. Build the image
         
-        docker build -f ./container/Dockerfile -t godo/nifi:1.1.1 -t godo/nifi:latest .
+        docker build -f ./container/Dockerfile -t godo/nifi:1.3.0 -t godo/nifi:latest .
 		
 2. Run the image (mode 1)
 
-		docker run --rm	-p 8080:8080 godo/nifi:1.1.1
+		docker run --rm -p 8080:8080 godo/nifi:1.3.0
 
 3. Wait for the image to initalize
 		
@@ -41,7 +41,7 @@ From your checkout directory:
 
 - **ZOO_SERVERS**: Used to populate ${NIFI_HOME}/conf/zookeeper.properties
 
-        p.e. [docker run ...] -e ZOO_SERVERS=server.1=nifi1:2888:3882 server.2=nifi2:2888:3888 server.3=nifi3:2888:3888 [...]
+        p.e. [docker run ...] -e ZOO_SERVERS=server.1=nifi1:2888:3888 server.2=nifi2:2888:3888 server.3=nifi3:2888:3888 [...]
 
 - **ZOO_CONNECT**: nifi.zookeeper.connect.string in ${NIFI_HOME}/conf/nifi.properties
 
@@ -95,6 +95,10 @@ From your checkout directory:
 
         p.e. [docker run ...] -e COORDINATION_PORT=11444 [...]
 
+- **INTERFACES**: nifi.web.http.network.interface* in ${NIFI_HOME}/conf/nifi.properties (defaults to all network interfaces - without lo -)
+
+        p.e. [docker run ...] -e INTERFACES="eth0 eth1" [...]
+
 ## Extras
 
 ### [NiFi Toolkit](https://nifi.apache.org/download.html) usage to generate sample certificates
@@ -113,3 +117,4 @@ NOTE: You have to reconfigure that file with your own generated sample certifica
 
 * [Apache NiFi 1.1.0 – Secured cluster setup](https://pierrevillard.com/tag/tls-toolkit/)
 * [apiri/docker-apache-nifi](https://github.com/apiri/dockerfile-apache-nifi)
+* [mkobit/docker-nifi](https://github.com/mkobit/docker-nifi)

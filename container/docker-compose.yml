@@ -1,31 +1,40 @@
 version: '3'
 services:
     nifi1:
-        image: godo/nifi:1.1.1
+        image: jllacer/nifi:1.3.0
         restart: always
         ports:
-            - 8081:80
+            - 8081:8080
+        networks:
+            - nifi
         environment:
             ZOO_MY_ID: 1
-            ZOO_SERVERS: server.1=nifi1:2888:3888 server.2=nifi2:2888:3888 server.3=nifi3:2888:3888
-            ZOO_CONNECT: nifi1:2181,nifi2:2181,nifi2:2181
+            ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=nifi2:2888:3888 server.3=nifi3:2888:3888
+            ZOO_CONNECT: nifi1:2181,nifi2:2181,nifi3:2181
 
     nifi2:
-        image: godo/nifi:1.1.1
+        image: jllacer/nifi:1.3.0
         restart: always
         ports:
-            - 8082:80
+            - 8082:8080
+        networks:
+            - nifi
         environment:
             ZOO_MY_ID: 2
-            ZOO_SERVERS: server.1=nifi1:2888:3888 server.2=nifi2:2888:3888 server.3=nifi3:2888:3888
-            ZOO_CONNECT: nifi1:2181,nifi2:2181,nifi2:2181
+            ZOO_SERVERS: server.1=nifi1:2888:3888 server.2=0.0.0.0:2888:3888 server.3=nifi3:2888:3888
+            ZOO_CONNECT: nifi1:2181,nifi2:2181,nifi3:2181
 
     nifi3:
-        image: godo/nifi:1.1.1
+        image: jllacer/nifi:1.3.0
         restart: always
         ports:
-            - 8083:80
+            - 8083:8080
+        networks:
+            - nifi
         environment:
             ZOO_MY_ID: 3
-            ZOO_SERVERS: server.1=nifi1:2888:3888 server.2=nifi2:2888:3888 server.3=nifi3:2888:3888
-            ZOO_CONNECT: nifi1:2181,nifi2:2181,nifi2:2181
+            ZOO_SERVERS: server.1=nifi1:2888:3888 server.2=nifi2:2888:3888 server.3=0.0.0.0:2888:3888
+            ZOO_CONNECT: nifi1:2181,nifi2:2181,nifi3:2181
+
+networks:
+    nifi:

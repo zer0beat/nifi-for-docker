@@ -23,6 +23,13 @@ configure_secure_cluster() {
         -e "s \(nifi\.cluster\.protocol\.is\.secure=\).*\$ \1true " \
         ${NIFI_HOME}/conf/nifi.properties
 
+    INTERFACES=${INTERFACES:-$(ifconfig | sed 's/[ \t].*//;/^\(lo\|\)$/d')}
+    for interface in ${INTERFACES}; do
+        sed -i \
+            -e "s \(nifi\.web\.https\.network\.interface\.default=\).*\$ \1\nnifi\.web\.https\.network\.interface\.${interface}=${interface} " \
+            ${NIFI_HOME}/conf/nifi.properties
+    done
+
     echo "Configure ${NIFI_HOME}/conf/authorizers.xml"
     OLD_IFS=${IFS}
     IFS="|"
@@ -109,6 +116,13 @@ configure_unsecure_node() {
         -e "s \(nifi\.remote\.input\.secure=\).*\$ \1false " \
         -e "s \(nifi\.remote\.input\.socket\.port=\).*\$ \1${SITE2SITE_PORT:-9998} " \
         ${NIFI_HOME}/conf/nifi.properties
+
+    INTERFACES=${INTERFACES:-$(ifconfig | sed 's/[ \t].*//;/^\(lo\|\)$/d')}
+    for interface in ${INTERFACES}; do
+        sed -i \
+            -e "s \(nifi\.web\.http\.network\.interface\.default=\).*\$ \1\nnifi\.web\.http\.network\.interface\.${interface}=${interface} " \
+            ${NIFI_HOME}/conf/nifi.properties
+    done
 }
 
 if [ "$ENABLE_SSL" = "true" ]; then
