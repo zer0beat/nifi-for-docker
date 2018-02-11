@@ -1,8 +1,10 @@
 FROM openjdk:8-jdk-alpine
 
-ENV             DIST_MIRROR             http://mirror.cc.columbia.edu/pub/software/apache/nifi
-ENV             NIFI_HOME               /opt/nifi
-ENV             VERSION                 1.3.0
+ARG VERSION
+
+ENV DIST_MIRROR     http://mirror.cc.columbia.edu/pub/software/apache/nifi
+ENV NIFI_HOME       /opt/nifi
+ENV VERSION         ${VERSION}
 
 RUN set -x && \
     apk --no-cache add tar wget && \

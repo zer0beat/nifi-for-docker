@@ -1,6 +1,6 @@
 ![Apache NiFi logo](http://nifi.apache.org/images/niFi-logo-horizontal.png "Apache NiFi")
 # Apache NiFi for Docker
-## Version 1.3.0
+## Version 1.5.0
 
 Provides a Dockerfile and associated scripts for configuring an instance of [Apache NiFi](http://nifi.apache.org) to run in diferent modes:
 1. Unsecure Nifi node
@@ -13,18 +13,22 @@ Provides a Dockerfile and associated scripts for configuring an instance of [Apa
 From your checkout directory:
 		
 1. Build the image
-        
-        docker build -f ./container/Dockerfile -t jllacer/nifi:1.3.0 -t jllacer/nifi:latest .
+
+        VERSION=1.5.0
+        FOLDER=1.x.x
+        cd ${FOLDER}
+        docker build --build-arg VERSION=${VERSION} -t nifi:${VERSION} .
 		
 2. Run the image (mode 1)
 
-		docker run --rm -p 8080:8080 jllacer/nifi:1.3.0
+        VERSION=1.5.0
+        docker run --rm -p 8080:8080 nifi:${VERSION}
 
 3. Wait for the image to initalize
 		
 4. Access through your Docker host system
  	
-		http://localhost:8080/nifi
+	http://localhost:8080/nifi
 
 
 ## Volumes
