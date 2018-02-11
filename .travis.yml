@@ -9,10 +9,12 @@ env:
 before_script:
   - env | sort
   - cd ${FOLDER}
-  - image="nifi:${VERSION}"
+  - image="${DOCKERHUB_USERNAME}/nifi:${VERSION}"
 
 script:
-  - travis_retry docker build -t "$image" .
+  - docker build --build-arg VERSION=${VERSION} -t "$image" .
+  - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+  - docker push "$image"
 
 after_script:
   - docker images
