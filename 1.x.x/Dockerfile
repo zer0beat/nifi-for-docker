@@ -2,7 +2,7 @@ FROM openjdk:8-jdk-alpine
 
 ARG VERSION
 
-ENV DIST_MIRROR     http://mirror.cc.columbia.edu/pub/software/apache/nifi
+ENV DIST_MIRROR     https://archive.apache.org/dist/nifi
 ENV NIFI_HOME       /opt/nifi
 ENV VERSION         ${VERSION}
 
