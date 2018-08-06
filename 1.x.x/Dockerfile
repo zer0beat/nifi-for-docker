@@ -15,7 +15,6 @@ RUN set -x && \
     adduser -D -G nifi nifi && \
     chown -R nifi:nifi ${NIFI_HOME}
 	
-VOLUME ["${NIFI_HOME}/flowfile_repository", "${NIFI_HOME}/database_repository", "${NIFI_HOME}/content_repository", "${NIFI_HOME}/provenance_repository"]
 EXPOSE 8080 8443
 USER nifi
 WORKDIR ${NIFI_HOME}

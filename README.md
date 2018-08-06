@@ -32,7 +32,7 @@ From your checkout directory:
 
 
 ## Volumes
-- The following directories are exposed as volumes which may optionally be mounted to a specified location
+- The following directories may optionally be mounted to a specified location to store the application state:
 	- `${NIFI_HOME}/flowfile_repository`
 	- `${NIFI_HOME}/content_repository`
 	- `${NIFI_HOME}/database_repository`
