@@ -25,4 +25,4 @@
 
 ## Extract default configuration from docker image
 
-        $ docker run --rm -v E:/tmp/nifi/conf:/opt/conf --entrypoint="" z0beat/nifi:1.7.1 cp -r /opt/nifi/conf/. /opt/conf/
+        $ docker run --rm -v /path/to/nifi/conf:/opt/conf --entrypoint="" z0beat/nifi:1.7.1 cp -r /opt/nifi/conf/. /opt/conf/
