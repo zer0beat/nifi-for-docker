@@ -16,6 +16,11 @@ before_script:
   - latest="${DOCKERHUB_USERNAME}/nifi:latest"
   - buildimage="${DOCKERHUB_USERNAME}/nifi:build"
 
+stages:
+  - build docker image
+  - test
+  - push docker image
+
 jobs:
   include:
     - stage: build docker image
