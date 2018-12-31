@@ -6,7 +6,8 @@ branches:
     - master
 
 env:
-  - VERSION=1.7.1 FOLDER=1.x.x LATEST=true
+  - VERSION=1.8.0 FOLDER=1.x.x LATEST=true
+  - VERSION=1.7.1 FOLDER=1.x.x
 
 before_script:
   - env | sort
